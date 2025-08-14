@@ -36,6 +36,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (
         pathname === "/" ||
         pathname === "/policy" ||
+        pathname === "/termsconditions" ||
         pathname.startsWith("/auth")
       )
         return true

@@ -19,26 +19,20 @@ const Footer = () => {
                     </div>
 
                     <div className="grid grid-cols-2 gap-8 md:grid-cols-3 md:w-2/3">
-                        <div>
-                            <h3 className="text-lg font-semibold">Company</h3>
-                            <ul className="mt-4 space-y-2">
-                                <li><Link href="/blog" className="hover:underline">Blog</Link></li>
-                                <li><Link href="/pricing" className="hover:underline">Pricing</Link></li>
-                            </ul>
-                        </div>
+                       
 
                         <div>
                             <h3 className="text-lg font-semibold">Help</h3>
                             <ul className="mt-4 space-y-2">
                                 <li><Link href="/support" className="hover:underline">Support</Link></li>
-                                <li><Link href="/help-center" className="hover:underline">Help Center</Link></li>
+                                <li><Link href="/helpcenter" className="hover:underline">Help Center</Link></li>
                             </ul>
                         </div>
 
                         <div>
                             <h3 className="text-lg font-semibold">Legal</h3>
                             <ul className="mt-4 space-y-2">
-                                <li><Link href="/terms" className="hover:underline">Terms of Use</Link></li>
+                                <li><Link href="/termsconditions" className="hover:underline">Terms of Use</Link></li>
                                 <li><Link href="/privacy" className="hover:underline">Privacy Policy</Link></li>
                             </ul>
                         </div>
