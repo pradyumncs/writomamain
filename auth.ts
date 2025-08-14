@@ -33,8 +33,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     authorized({ request, auth }) {
       const { pathname } = request.nextUrl
-      if (pathname === "/middleware-example") return !!auth
-      return true
+      if (
+        pathname === "/" ||
+        pathname === "/policy" ||
+        pathname.startsWith("/auth")
+      )
+        return true
+      return !!auth
     },
     jwt({ token, trigger, session, account }) {
       if (trigger === "update") token.name = session.user.name
