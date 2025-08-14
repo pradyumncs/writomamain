@@ -8,15 +8,15 @@ import EthicalPolicy from "@/components/homepage/ethicalpolicy"
 import ScrollColleges from "@/components/homepage/scrollcolleges"
 import Image from "next/image"
 import GetStartedBottom from "@/components/homepage/getstartedbottom"
-import Header from "@/components/header"
-import Footer from "@/components/homepage/footer"
 
+import Footer from "@/components/homepage/footer"
+import Header from "@/components/homepage/firsttopheader"
 export default function Index() {
 
   return (
     <div className="min-h-screen bg-white">
   
-    
+    <Header />
       <TopHeader />
       {/* Dashboard Image */}
       <div className="flex justify-center mb-12 px-4">
@@ -24,8 +24,8 @@ export default function Index() {
           <Image
             src="/homedash.png"
             alt="Dashboard Preview"
-            width={1200}
-            height={600}
+            width={650}
+            height={450}
             className="w-full h-auto rounded-lg shadow-lg"
             priority
           />

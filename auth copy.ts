@@ -1,6 +1,7 @@
 import NextAuth from "next-auth"
 import "next-auth/jwt"
 
+
 import Google from "next-auth/providers/google"
 
 import { createStorage } from "unstorage"
@@ -23,14 +24,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   theme: { logo: "https://authjs.dev/img/logo-sm.png" },
   adapter: UnstorageAdapter(storage),
   providers: [
+   
     Google,
+   
   ],
   basePath: "/auth",
   session: { strategy: "jwt" },
   callbacks: {
-    // By returning true, you make authentication optional for all routes.
     authorized({ request, auth }) {
-      return true
+      const { pathname } = request.nextUrl
+      if (
+        pathname === "/" ||
+        pathname === "/policy" ||
+        pathname === "/termsconditions" ||
+        pathname.startsWith("/auth")
+      )
+        return true
+      return !!auth
     },
     jwt({ token, trigger, session, account }) {
       if (trigger === "update") token.name = session.user.name
