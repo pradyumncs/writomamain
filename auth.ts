@@ -41,7 +41,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         pathname === "/support" ||
         pathname === "/termsconditions" ||
         pathname.startsWith("/api") ||
-        pathname.startsWith("/auth")
+        pathname.startsWith("/auth")||
+        pathname.startsWith("/api/") ||
+        pathname.startsWith("/auth/") ||
+        pathname.startsWith("/api/<...>") ||
+        pathname.startsWith("/auth/")
       )
         return true
       return !!auth
