@@ -34,6 +34,7 @@ const Footer = () => {
                             <ul className="mt-4 space-y-2">
                                 <li><Link href="/termsconditions" className="hover:underline">Terms of Use</Link></li>
                                 <li><Link href="/privacy" className="hover:underline">Privacy Policy</Link></li>
+                                <li><Link href="/refunds" className="hover:underline">Refund Policy</Link></li>
                             </ul>
                         </div>
                     </div>
