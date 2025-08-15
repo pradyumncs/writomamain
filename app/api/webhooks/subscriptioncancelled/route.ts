@@ -15,9 +15,7 @@ export async function POST(req: Request) {
     const { error } = await supabase
       .from("subscriptions")
       .update({
-        status,
-        cancelled_at: body.data.cancelled_at,   // store cancelled time
-        cancel_at_next_billing_date: body.data.cancel_at_next_billing_date,
+        status,  // store cancelled time
         next_billing_date: body.data.next_billing_date,
         previous_billing_date: body.data.previous_billing_date,
       })

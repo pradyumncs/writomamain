@@ -17,7 +17,6 @@ export async function POST(req: Request) {
         status, // should be "active"
         next_billing_date: body.data.next_billing_date,
         previous_billing_date: body.data.previous_billing_date,
-        renewed_at: body.timestamp, // track renewal timestamp
       })
       .eq("subscription_id", subscriptionId);
 

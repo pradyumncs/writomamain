@@ -14,8 +14,7 @@ export async function POST(req: Request) {
     const { error } = await supabase
       .from("subscriptions")
       .update({
-        status,
-        expired_at: body.timestamp, // store the event timestamp as expiry time
+        status, // store the event timestamp as expiry time
         next_billing_date: null,   // no more billing once expired
       })
       .eq("subscription_id", subscriptionId);
