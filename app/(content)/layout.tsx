@@ -22,7 +22,9 @@ import {
   HelpCircle,
   Globe,
   FileText,
+  LogOut, // 👈 add this
 } from "lucide-react"
+
 import Link from "next/link"
 import { Separator } from "@/components/ui/separator"
 import { usePathname } from "next/navigation"
@@ -110,33 +112,36 @@ export default function DashboardLayout({
             </SidebarGroup>
           </SidebarMenu>
         </SidebarContent>
+<SidebarFooter className="p-3 border-t">
+  <SidebarMenu>
+    <SidebarMenuItem>
+      <SidebarMenuButton asChild className="mb-1">
+        <Link
+          href="/managesubscription"
+          className={navLinkClass("/managesubscription")}
+        >
+          <CreditCard className="h-4 w-4" />   {/* 👈 changed from Sparkles */}
+          <span>Manage Subscription</span>
+        </Link>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
 
-        <SidebarFooter className="p-3 border-t">
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild className="mb-1">
-                <Link href="/pricing" className={navLinkClass("/pricing")}>
-                  <Sparkles className="h-4 w-4" />
-                  <span>Upgrade Plan</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+  
 
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild className="mb-1">
-                <Link href="/auth/signout" className={navLinkClass("/auth/signout")}>
-                  <Sparkles className="h-4 w-4" />
-                  <span>Signout</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-       
-            
-          
-          </SidebarMenu>
-          
-      
-        </SidebarFooter>
+    <SidebarMenuItem>
+      <SidebarMenuButton asChild className="mb-1">
+        <Link href="/auth/signout" className={navLinkClass("/auth/signout")}>
+          <LogOut className="h-4 w-4" />  {/* 👈 changed from Sparkles */}
+          <span>Signout</span>
+        </Link>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  </SidebarMenu>
+</SidebarFooter>
+
+
+
+
       </AppSidebar>
       
       <main className="flex-1 flex flex-col min-h-screen">
