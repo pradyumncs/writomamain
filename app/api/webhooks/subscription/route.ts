@@ -2,16 +2,29 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
-    // Parse the JSON body
-    const body = await req.json();
+    const webhookData = await req.json();
 
-    // Log the webhook event (you can replace this with DB logic later)
-    console.log("🔔 Webhook Received:", JSON.stringify(body, null, 2));
+    // Log the incoming webhook
+    console.log("🔔 Webhook received:", webhookData);
 
-    // Respond to acknowledge receipt
-    return NextResponse.json({ received: true });
+    // Always respond quickly to acknowledge
+    return NextResponse.json(
+      { message: "Webhook received successfully" },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error("❌ Webhook Error:", error);
-    return new NextResponse("Invalid webhook payload", { status: 400 });
+    console.error("❌ Webhook error:", error);
+    return NextResponse.json(
+      { message: "Invalid webhook payload" },
+      { status: 400 }
+    );
   }
+}
+
+// (Optional) If you want to block other methods
+export async function GET() {
+  return NextResponse.json(
+    { message: "Method not allowed" },
+    { status: 405 }
+  );
 }
