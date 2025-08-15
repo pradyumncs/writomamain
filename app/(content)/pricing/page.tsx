@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import Link from "next/link"
 
 type BillingCycle = "monthly" | "annually"
 
@@ -22,6 +23,8 @@ export default function PricingPage() {
       {
         name: "Basic",
         annualPrice: 8,
+        monthlyLink: "https://test.checkout.dodopayments.com/buy/pdt_5knQpV5zavIYyHEGbQ1FE?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
+        annualLink: "https://test.checkout.dodopayments.com/buy/pdt_q2cpoQ0PIiIMtQuZKOgh5?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
         features: [
           "8,000 Humanizer Words",
           "100 AI Detector Uses",
@@ -34,6 +37,8 @@ export default function PricingPage() {
       {
         name: "Premium",
         annualPrice: 20,
+        monthlyLink: "https://test.checkout.dodopayments.com/buy/pdt_IyzjapXZww0EBezvWGKFW?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
+        annualLink: "https://test.checkout.dodopayments.com/buy/pdt_jBE4DsBwuywQbRRsTS5U3?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
         features: [
           "30,000 Humanizer Words",
           "500 AI Detector Uses",
@@ -47,6 +52,8 @@ export default function PricingPage() {
       {
         name: "Ultimate",
         annualPrice: 40,
+        monthlyLink: "https://test.checkout.dodopayments.com/buy/pdt_k8IVvEPTRk635Qi11Yh82?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
+        annualLink: "https://test.checkout.dodopayments.com/buy/pdt_SOveXmgLsiVvSGav5KxSW?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
         features: [
           "Unlimited Humanizer Words",
           "Unlimited AI Detector Uses",
@@ -69,7 +76,7 @@ export default function PricingPage() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl">
+    <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <div className="text-center space-y-3 mb-10 md:mb-14">
         <p className="text-xs tracking-widest text-indigo-600 font-semibold">PRICING</p>
         <h1 className="text-3xl md:text-5xl font-bold tracking-tight">
@@ -97,13 +104,10 @@ export default function PricingPage() {
             onClick={() => setBilling("annually")}
           >
             Annually
-            <span className="absolute -right-8 -top-3 hidden md:inline-flex items-center rounded-full bg-emerald-200 px-2 py-0.5 text-xs font-semibold text-emerald-700">
+            <span className="absolute -right-8 -top-3 inline-flex items-center rounded-full bg-emerald-200 px-2 py-0.5 text-xs font-semibold text-emerald-700">
               -20%
             </span>
           </button>
-          <span className="md:hidden ml-1 inline-flex items-center rounded-full bg-emerald-200 px-2 py-0.5 text-xs font-semibold text-emerald-700">
-            -20%
-          </span>
         </div>
       </div>
 
@@ -112,6 +116,7 @@ export default function PricingPage() {
         {plans.map((plan, idx) => {
           const price = computePrice(plan.annualPrice)
           const isPopular = plan.popular
+          const link = billing === 'annually' ? plan.annualLink : plan.monthlyLink;
           return (
             <Card
               key={plan.name}
@@ -155,15 +160,17 @@ export default function PricingPage() {
               </CardContent>
 
               <CardFooter>
-                <Button
-                  className={`w-full h-12 text-base ${
-                    isPopular
-                      ? "bg-indigo-600 hover:bg-indigo-700"
-                      : "bg-white text-black border hover:bg-gray-100"
-                  }`}
-                >
-                  {plan.cta}
-                </Button>
+                <Link href={link} className="w-full">
+                  <Button
+                    className={`w-full h-12 text-base ${
+                      isPopular
+                        ? "bg-indigo-600 hover:bg-indigo-700"
+                        : "bg-white text-black border hover:bg-gray-100"
+                    }`}
+                  >
+                    {plan.cta}
+                  </Button>
+                </Link>
               </CardFooter>
 
               {idx === 0 && (
@@ -183,5 +190,3 @@ export default function PricingPage() {
     </div>
   )
 }
-
-
