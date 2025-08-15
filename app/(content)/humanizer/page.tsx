@@ -409,7 +409,7 @@ function Humanizer() {
               <span className="text-gray-900 font-medium">AI Humanizer</span>
             </div>
             <div className="text-gray-500 text-sm">
-              © 2024 AI Humanizer. All rights reserved.
+              © 2025 Writoma. All rights reserved.
             </div>
           </div>
         </div>
