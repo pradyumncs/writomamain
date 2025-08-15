@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import DodoPayments from "dodopayments";
 
 const client = new DodoPayments({
-  bearerToken: process.env.DODO_SECRET_KEY!, // keep secret in .env.local
+  bearerToken: process.env.DODO_PAYMENTS_API_KEY!, // keep secret in .env.local
 });
 
 export async function PATCH(req: Request) {
