@@ -1,11 +1,32 @@
 import NextAuth from "next-auth"
+import "next-auth/jwt"
+
+
 import Google from "next-auth/providers/google"
+
+import { createStorage } from "unstorage"
+import memoryDriver from "unstorage/drivers/memory"
+import vercelKVDriver from "unstorage/drivers/vercel-kv"
+import { UnstorageAdapter } from "@auth/unstorage-adapter"
+
+const storage = createStorage({
+  driver: process.env.VERCEL
+    ? vercelKVDriver({
+        url: process.env.AUTH_KV_REST_API_URL,
+        token: process.env.AUTH_KV_REST_API_TOKEN,
+        env: false,
+      })
+    : memoryDriver(),
+})
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   debug: !!process.env.AUTH_DEBUG,
-  theme: { logo: "/logo.png" }, // use your local logo
+  theme: { logo: "https://authjs.dev/img/logo-sm.png" },
+  adapter: UnstorageAdapter(storage),
   providers: [
+   
     Google,
+   
   ],
   basePath: "/auth",
   session: { strategy: "jwt" },
@@ -18,8 +39,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         pathname === "/termsconditions" ||
         pathname === "/refunds" ||
         pathname === "/support" ||
+        pathname === "/termsconditions" ||
         pathname.startsWith("/api") ||
-        pathname.startsWith("/auth")
+        pathname.startsWith("/auth")||
+        pathname.startsWith("/api/") ||
+        pathname.startsWith("/auth/") ||
+        pathname.startsWith("/api/<...>") ||
+        pathname.startsWith("/auth/")
       )
         return true
       return !!auth
@@ -33,6 +59,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
     async session({ session, token }) {
       if (token?.accessToken) session.accessToken = token.accessToken
+
       return session
     },
   },
