@@ -2,12 +2,12 @@ import { SignIn } from "@/components/auth-components";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { FcGoogle } from "react-icons/fc";
 
-export default async function SignInPage({
-  searchParams,
-}: {
-  // The searchParams object is now a Promise that resolves to an object
-  searchParams: { callbackUrl?: string };
-}) {
+// Define the correct type for Next.js 15 searchParams
+type PageProps = {
+  searchParams: Promise<{ callbackUrl?: string }>;
+};
+
+export default async function SignInPage({ searchParams }: PageProps) {
   // Await the searchParams to get the actual object
   const { callbackUrl } = await searchParams;
 
