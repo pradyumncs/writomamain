@@ -3,16 +3,18 @@ import { Button } from "./ui/button"
 
 export function SignIn({
   provider,
+  callbackUrl,
+  children,
   ...props
-}: { provider?: string } & React.ComponentPropsWithRef<typeof Button>) {
+}: { provider?: string, callbackUrl?: string, children?: React.ReactNode } & React.ComponentPropsWithRef<typeof Button>) {
   return (
     <form
       action={async () => {
         "use server"
-        await signIn(provider)
+        await signIn(provider, { redirectTo: callbackUrl })
       }}
     >
-      <Button {...props}>Sign In</Button>
+      <Button {...props}>{children ?? 'Sign In'}</Button>
     </form>
   )
 }

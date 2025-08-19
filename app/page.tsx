@@ -11,6 +11,7 @@ import GetStartedBottom from "@/components/homepage/getstartedbottom"
 
 import Footer from "@/components/homepage/footer"
 import Header from "@/components/homepage/firsttopheader"
+import LogoCloud from "@/components/logo-cloud"
 export default function Index() {
 
   return (
@@ -32,7 +33,8 @@ export default function Index() {
         </div>
       </div>
       <div className="my-12">
-      <ScrollColleges />
+      <LogoCloud/>
+    
       </div>
     
       <Feature1 />
