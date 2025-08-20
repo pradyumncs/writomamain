@@ -7,6 +7,91 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { ChevronDown, Sparkles, Copy, Download, FileText, Zap, Shield, Target } from "lucide-react"
 
+// AI Detection Gauge Component
+interface AIDetectionGaugeProps {
+  aiProbability: number
+  verdict: string
+}
+
+const AIDetectionGauge: React.FC<AIDetectionGaugeProps> = ({ aiProbability, verdict }) => {
+  // Calculate the rotation for the needle (gauge goes from -90 to 90 degrees)
+  const needleRotation = -90 + (aiProbability / 100) * 180
+
+  // Determine colors based on AI probability
+  const getStatusColor = (percentage: number) => {
+    if (percentage >= 80) return '#ef4444' // red-500
+    if (percentage >= 60) return '#f59e0b' // amber-500  
+    if (percentage >= 40) return '#eab308' // yellow-500
+    if (percentage >= 20) return '#84cc16' // lime-500
+    return '#22c55e' // green-500
+  }
+
+  const statusColor = getStatusColor(aiProbability)
+
+  // Create gradient stops for the gauge
+  const createGradient = () => {
+    return `conic-gradient(
+      from 180deg at 50% 50%,
+      #22c55e 0deg,
+      #84cc16 36deg,
+      #eab308 72deg,
+      #f59e0b 108deg,
+      #ef4444 144deg,
+      #ef4444 180deg
+    )`
+  }
+
+  return (
+    <div className="flex flex-col items-center justify-center p-8 bg-white">
+      <div className="text-lg font-semibold text-gray-700 mb-2">
+        Your Text is {verdict}
+      </div>
+      
+      {/* Gauge Container */}
+      <div className="relative w-64 h-32 mb-4">
+        {/* Gauge Background */}
+        <div 
+          className="absolute inset-0 rounded-t-full border-8 border-gray-200"
+          style={{
+            background: createGradient(),
+            clipPath: 'polygon(0 100%, 0 0, 100% 0, 100% 100%)'
+          }}
+        />
+        
+        {/* White center overlay to create gauge effect */}
+
+        
+        {/* Needle */}
+        <div 
+          className="absolute bottom-0 left-1/2 origin-bottom w-1 h-24 bg-gray-800 rounded-full transform -translate-x-1/2 transition-transform duration-1000 ease-out"
+          style={{ transform: `translateX(-50%) rotate(${needleRotation}deg)` }}
+        />
+        
+        {/* Center dot */}
+        <div className="absolute bottom-0 left-1/2 w-4 h-4 bg-gray-800 rounded-full transform -translate-x-1/2 translate-y-2" />
+        
+        {/* Percentage labels */}
+        <div className="absolute bottom-2 left-2 text-xs font-medium text-gray-500">0%</div>
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-xs font-medium text-gray-500">50%</div>
+        <div className="absolute bottom-2 right-2 text-xs font-medium text-gray-500">100%</div>
+      </div>
+      
+      {/* Result Display */}
+      <div className="text-center">
+        <div 
+          className="inline-flex items-center justify-center w-20 h-20 rounded-full text-white text-2xl font-bold mb-2"
+          style={{ backgroundColor: statusColor }}
+        >
+          {Math.round(aiProbability)}%
+        </div>
+        <div className="text-lg font-semibold" style={{ color: statusColor }}>
+          AI GPT*
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function AiDetector() {
   type DetectionResult = {
     verdict: string
@@ -17,7 +102,7 @@ function AiDetector() {
     advice: string
     raw?: string
   }
-  const [inputText, setInputText] = useState(`Paste text to analyze for AI usage...`)
+  const [inputText, setInputText] = useState(``)
   
   const [outputText, setOutputText] = useState("Detection result will appear here")
   const [result, setResult] = useState<DetectionResult | null>(null)
@@ -199,7 +284,7 @@ function AiDetector() {
                         Detecting...
                       </>
                     ) : (
-                      "🔎 Detect AI"
+                      "Detect AI"
                     )}
                   </Button>
                 </div>
@@ -218,11 +303,6 @@ function AiDetector() {
                         </div>
                         <CardTitle>Detection Result</CardTitle>
                       </div>
-                      {humanized && result && (
-                        <Badge className={`border ${verdictStyles.badge}`}>
-                          {result.verdict}
-                        </Badge>
-                      )}
                     </div>
                   </CardHeader>
                   <CardContent>
@@ -235,71 +315,63 @@ function AiDetector() {
                         <p className="text-gray-500 text-xs mt-2">Detecting AI usage...</p>
                       </div>
                     ) : humanized && result ? (
-                      <div className="space-y-6">
-                        <div>
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm text-gray-600">AI Probability</span>
-                            <span className="text-sm font-semibold text-gray-900">{Math.round(result.aiProbability)}%</span>
-                          </div>
-                          <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
-                            <div className={`h-2 ${verdictStyles.bar}`} style={{ width: `${Math.max(0, Math.min(100, result.aiProbability))}%` }} />
+                      <>
+                        {/* AI Detection Gauge */}
+                        <AIDetectionGauge 
+                          aiProbability={result.aiProbability} 
+                          verdict={result.verdict}
+                        />
+                        
+                        {/* Additional Details */}
+                        <div className="space-y-6 mt-6">
+                          {result.summary && (
+                            <div>
+                              <div className="text-sm font-semibold text-gray-900 mb-1">Summary</div>
+                              <p className="text-sm text-gray-700 leading-relaxed">{result.summary}</p>
+                            </div>
+                          )}
+
+                          {result.reasons?.length > 0 && (
+                            <div>
+                              <div className="text-sm font-semibold text-gray-900 mb-2">Reasons</div>
+                              <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
+                                {result.reasons.map((r, idx) => (
+                                  <li key={idx}>{r}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          {result.advice && (
+                            <div className="rounded-lg border border-gray-200 p-4 bg-gray-50">
+                              <div className="text-sm font-semibold text-gray-900 mb-1">Advice</div>
+                              <p className="text-sm text-gray-700 leading-relaxed">{result.advice}</p>
+                            </div>
+                          )}
+
+                          <Separator className="my-2" />
+                          <div className="flex gap-2">
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              className="rounded-md hover:bg-gray-50 transition-colors"
+                              onClick={handleCopy}
+                            >
+                              {copied ? (
+                                <div className="flex items-center gap-1">
+                                  <div className="w-4 h-4 text-emerald-600">✓</div>
+                                  <span className="text-xs text-emerald-600">Copied!</span>
+                                </div>
+                              ) : (
+                                <Copy className="w-4 h-4" />
+                              )}
+                            </Button>
+                            <Button size="sm" variant="outline" className="rounded-md hover:bg-gray-50">
+                              <Download className="w-4 h-4" />
+                            </Button>
                           </div>
                         </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
-                          <div className="rounded-lg border border-gray-200 p-4 bg-white">
-                            <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Verdict</div>
-                            <div className="text-2xl font-bold text-gray-900">{result.verdict}</div>
-                          </div>
-                        </div>
-
-                        {result.summary && (
-                          <div>
-                            <div className="text-sm font-semibold text-gray-900 mb-1">Summary</div>
-                            <p className="text-sm text-gray-700 leading-relaxed">{result.summary}</p>
-                          </div>
-                        )}
-
-                        {result.reasons?.length > 0 && (
-                          <div>
-                            <div className="text-sm font-semibold text-gray-900 mb-2">Reasons</div>
-                            <ul className="list-disc list-inside text-sm text-gray-700 space-y-1">
-                              {result.reasons.map((r, idx) => (
-                                <li key={idx}>{r}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-
-                        {result.advice && (
-                          <div className="rounded-lg border border-gray-200 p-4 bg-gray-50">
-                            <div className="text-sm font-semibold text-gray-900 mb-1">Advice</div>
-                            <p className="text-sm text-gray-700 leading-relaxed">{result.advice}</p>
-                          </div>
-                        )}
-
-                        <Separator className="my-2" />
-                        <div className="flex gap-2">
-                          <Button 
-                            size="sm" 
-                            variant="outline" 
-                            className="rounded-md hover:bg-gray-50 transition-colors"
-                            onClick={handleCopy}
-                          >
-                            {copied ? (
-                              <div className="flex items-center gap-1">
-                                <div className="w-4 h-4 text-emerald-600">✓</div>
-                                <span className="text-xs text-emerald-600">Copied!</span>
-                              </div>
-                            ) : (
-                              <Copy className="w-4 h-4" />
-                            )}
-                          </Button>
-                          <Button size="sm" variant="outline" className="rounded-md hover:bg-gray-50">
-                            <Download className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </div>
+                      </>
                     ) : (
                       <div className="flex items-center justify-center h-64 text-center">
                         <div className="space-y-3">
@@ -363,7 +435,7 @@ function AiDetector() {
                       Detecting...
                     </>
                   ) : (
-                    "🔎 Detect AI"
+                    "Detect AI"
                   )}
                 </Button>
               </div>
@@ -376,7 +448,7 @@ function AiDetector() {
                   <div className="w-8 h-8 rounded-md flex items-center justify-center bg-indigo-50 text-indigo-600 border border-indigo-100">
                     <Shield className="w-4 h-4" />
                   </div>
-                  <h2 className="text-lg font-bold text-gray-900">Humanized Output</h2>
+                  <h2 className="text-lg font-bold text-gray-900">Detection Result</h2>
                 </div>
                 
                 {humanized && (
@@ -403,45 +475,46 @@ function AiDetector() {
               </div>
               
               <div className="relative">
-                <div className="w-full h-64 p-4 bg-gray-50 border border-gray-200 rounded-lg text-sm leading-relaxed overflow-y-auto">
-                  {isLoading ? (
-                    <div className="flex flex-col items-center justify-center h-full text-center">
-                      <div className="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center mb-3 animate-pulse">
-                        <Sparkles className="w-5 h-5 text-white" />
-                      </div>
-                      <p className="text-gray-600 font-medium">Analyzing...</p>
-                      <p className="text-gray-500 text-xs mt-1">Detecting AI usage</p>
+                {isLoading ? (
+                  <div className="flex flex-col items-center justify-center h-64 text-center">
+                    <div className="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center mb-3 animate-pulse">
+                      <Sparkles className="w-5 h-5 text-white" />
                     </div>
-                  ) : humanized ? (
-                    <div className="space-y-4">
-                      <p className="text-gray-700 leading-relaxed">{outputText}</p>
-                      <div className="flex justify-between items-center pt-3 border-t border-gray-200/60">
-                        <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1.5 rounded-full border border-emerald-200">
-                          <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
-                          Detection Complete
-                        </div>
-                        <div className="text-xs text-gray-600 bg-white px-2 py-1 rounded-full border border-gray-200">
-                          Completed
-                        </div>
+                    <p className="text-gray-600 font-medium">Analyzing...</p>
+                    <p className="text-gray-500 text-xs mt-1">Detecting AI usage</p>
+                  </div>
+                ) : humanized && result ? (
+                  <div className="space-y-4">
+                    <AIDetectionGauge 
+                      aiProbability={result.aiProbability} 
+                      verdict={result.verdict}
+                    />
+                    
+                    {result.summary && (
+                      <div className="p-4 bg-gray-50 rounded-lg">
+                        <div className="text-sm font-semibold text-gray-900 mb-1">Summary</div>
+                        <p className="text-sm text-gray-700 leading-relaxed">{result.summary}</p>
+                      </div>
+                    )}
+                    
+                    <div className="flex justify-between items-center pt-3 border-t border-gray-200/60">
+                      <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1.5 rounded-full border border-emerald-200">
+                        <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div>
+                        Detection Complete
+                      </div>
+                      <div className="text-xs text-gray-600 bg-white px-2 py-1 rounded-full border border-gray-200">
+                        Completed
                       </div>
                     </div>
-                  ) : (
-                    <div className="flex items-center justify-center h-full text-center">
-                      <div className="space-y-2">
-                        <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mx-auto">
-                          <FileText className="w-6 h-6 text-gray-600" />
-                        </div>
-                        <p className="text-gray-500 font-medium text-sm">Detection result will appear here</p>
-                        <p className="text-gray-400 text-xs">Paste content and detect to start</p>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center h-64 text-center">
+                    <div className="space-y-2">
+                      <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center mx-auto">
+                        <FileText className="w-6 h-6 text-gray-600" />
                       </div>
-                    </div>
-                  )}
-                </div>
-                
-                {humanized && (
-                  <div className="absolute top-3 right-3">
-                    <div className="bg-emerald-500 text-white rounded-md px-2 py-0.5 text-xs font-medium shadow-sm">
-                      Detection
+                      <p className="text-gray-500 font-medium text-sm">Detection result will appear here</p>
+                      <p className="text-gray-400 text-xs">Paste content and detect to start</p>
                     </div>
                   </div>
                 )}
@@ -451,6 +524,7 @@ function AiDetector() {
         </div>
       </div>
 
+ 
       {/* Minimal Footer */}
       <div className="mt-16 bg-white border-t">
         <div className="max-w-7xl mx-auto px-6 py-8">
