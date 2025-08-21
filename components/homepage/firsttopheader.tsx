@@ -11,7 +11,7 @@ const Header = () => {
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <nav className="container mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo */}
-        <Link href="/" className="text-xl font-bold text-gray-800 ml-40">
+        <Link href="/" className="text-xl font-bold text-gray-800 ml-30 ">
          
           <span className="bg-blue-600 text-white text-2xl font-semibold px-2 py-1 rounded-md">
             Writoma

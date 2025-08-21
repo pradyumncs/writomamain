@@ -23,8 +23,8 @@ export default function PricingPage() {
       {
         name: "Basic",
         annualPrice: 8,
-        monthlyLink: "https://test.checkout.dodopayments.com/buy/pdt_5knQpV5zavIYyHEGbQ1FE?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
-        annualLink: "https://test.checkout.dodopayments.com/buy/pdt_q2cpoQ0PIiIMtQuZKOgh5?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
+        monthlyLink: "https://checkout.dodopayments.com/buy/pdt_VTYUe3nENUUHeyS40BHxC?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
+        annualLink: "https://checkout.dodopayments.com/buy/pdt_cHHUKnKykNBBXgj9tuywE?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
         features: [
           "8,000 Humanizer Words",
           "100 AI Detector Uses",
@@ -37,8 +37,8 @@ export default function PricingPage() {
       {
         name: "Premium",
         annualPrice: 20,
-        monthlyLink: "https://test.checkout.dodopayments.com/buy/pdt_IyzjapXZww0EBezvWGKFW?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
-        annualLink: "https://test.checkout.dodopayments.com/buy/pdt_jBE4DsBwuywQbRRsTS5U3?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
+        monthlyLink: "https://checkout.dodopayments.com/buy/pdt_utQjF0HlYfA6Zzce089Qk?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
+        annualLink: "https://checkout.dodopayments.com/buy/pdt_VuBALMPYXTUa56e9FZlfu?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
         features: [
           "30,000 Humanizer Words",
           "500 AI Detector Uses",
@@ -52,8 +52,8 @@ export default function PricingPage() {
       {
         name: "Ultimate",
         annualPrice: 40,
-        monthlyLink: "https://test.checkout.dodopayments.com/buy/pdt_k8IVvEPTRk635Qi11Yh82?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
-        annualLink: "https://test.checkout.dodopayments.com/buy/pdt_SOveXmgLsiVvSGav5KxSW?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
+        monthlyLink: "https://checkout.dodopayments.com/buy/pdt_1WaNHOXPKisFU8GJgfLJ1?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
+        annualLink: "https://checkout.dodopayments.com/buy/pdt_v5MPhELvoKlC41hAENvDw?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
         features: [
           "Unlimited Humanizer Words",
           "Unlimited AI Detector Uses",
@@ -120,11 +120,7 @@ export default function PricingPage() {
           return (
             <Card
               key={plan.name}
-              className={
-                isPopular
-                  ? "ring-2 ring-indigo-600 shadow-lg"
-                  : ""
-              }
+              className={isPopular ? "ring-2 ring-indigo-600 shadow-lg" : ""}
             >
               <CardHeader className="relative">
                 <div className="flex items-center justify-between">

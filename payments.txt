@@ -1,11 +1,11 @@
-https://test.checkout.dodopayments.com/buy/pdt_5knQpV5zavIYyHEGbQ1FE?quantity=1&redirect_url=https://writoma.com%2Fdashboard
+https://checkout.dodopayments.com/buy/pdt_VTYUe3nENUUHeyS40BHxC?quantity=1&redirect_url=https://writoma.com%2Fdashboard
 
-https://test.checkout.dodopayments.com/buy/pdt_IyzjapXZww0EBezvWGKFW?quantity=1&redirect_url=https://writoma.com%2Fdashboard
+https://checkout.dodopayments.com/buy/pdt_utQjF0HlYfA6Zzce089Qk?quantity=1&redirect_url=https://writoma.com%2Fdashboard
 
-https://test.checkout.dodopayments.com/buy/pdt_k8IVvEPTRk635Qi11Yh82?quantity=1&redirect_url=https://writoma.com%2Fdashboard
+https://checkout.dodopayments.com/buy/pdt_1WaNHOXPKisFU8GJgfLJ1?quantity=1&redirect_url=https://writoma.com%2Fdashboard
 
-https://test.checkout.dodopayments.com/buy/pdt_q2cpoQ0PIiIMtQuZKOgh5?quantity=1&redirect_url=https://writoma.com%2Fdashboard
+https://checkout.dodopayments.com/buy/pdt_cHHUKnKykNBBXgj9tuywE?quantity=1&redirect_url=https://writoma.com%2Fdashboard
 
-https://test.checkout.dodopayments.com/buy/pdt_jBE4DsBwuywQbRRsTS5U3?quantity=1&redirect_url=https://writoma.com%2Fdashboard
+https://checkout.dodopayments.com/buy/pdt_VuBALMPYXTUa56e9FZlfu?quantity=1&redirect_url=https://writoma.com%2Fdashboard
 
-https://test.checkout.dodopayments.com/buy/pdt_SOveXmgLsiVvSGav5KxSW?quantity=1&redirect_url=https://writoma.com%2Fdashboard
+https://checkout.dodopayments.com/buy/pdt_v5MPhELvoKlC41hAENvDw?quantity=1&redirect_url=https://writoma.com%2Fdashboard
