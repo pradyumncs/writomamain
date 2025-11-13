@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Writoma",
   description:
-    "Writoma converts your AI-generated content into fully humanized, undetectable writing",
+    "Writoma converts your AI-generated content into fully humanized, undetectable writing for your business and personal use",
 }
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
