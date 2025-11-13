@@ -26,9 +26,9 @@ export default function PricingPage() {
         monthlyLink: "https://checkout.dodopayments.com/buy/pdt_VTYUe3nENUUHeyS40BHxC?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
         annualLink: "https://checkout.dodopayments.com/buy/pdt_cHHUKnKykNBBXgj9tuywE?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
         features: [
-          "8,000 Humanizer Words",
+          "20,000 Humanizer Words",
           "100 AI Detector Uses",
-          "50 Generator Uses",
+          "100 Generator Uses",
           "Watermark and Future Proof",
         ],
         cta: "Get Started",
@@ -40,9 +40,9 @@ export default function PricingPage() {
         monthlyLink: "https://checkout.dodopayments.com/buy/pdt_utQjF0HlYfA6Zzce089Qk?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
         annualLink: "https://checkout.dodopayments.com/buy/pdt_VuBALMPYXTUa56e9FZlfu?quantity=1&redirect_url=https://writoma.com%2Fdashboard",
         features: [
-          "30,000 Humanizer Words",
+          "50,000 Humanizer Words",
           "500 AI Detector Uses",
-          "200 Generator Uses",
+          "300 Generator Uses",
           "Watermark and Future Proof",
           "Priority Support",
         ],

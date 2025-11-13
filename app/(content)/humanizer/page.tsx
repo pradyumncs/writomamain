@@ -1,5 +1,6 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ChevronDown, Sparkles, Copy, Download, FileText, Zap, Shield, Target } from "lucide-react"
@@ -12,10 +13,48 @@ function Humanizer() {
     const [writingLevel, setWritingLevel] = useState("Intermediate")
     const [language, setLanguage] = useState("English")
     const [wordCount, setWordCount] = useState(0)
-    const [wordsRemaining, setWordsRemaining] = useState(250)
+    const [wordsRemaining, setWordsRemaining] = useState(2000)
     const [copied, setCopied] = useState(false)
+    const [isActivePro, setIsActivePro] = useState<boolean | null>(null)
+    const router = useRouter()
+
+    useEffect(() => {
+        const checkSubscription = async () => {
+            try {
+                const response = await fetch('/api/check-subscription')
+                const data = await response.json()
+                setIsActivePro(data.isActive || false)
+            } catch (error) {
+                console.error('Error checking subscription:', error)
+                setIsActivePro(false)
+            }
+        }
+        checkSubscription()
+    }, [])
+
+    // Auto-redirect to pricing after 3 seconds if user is not active/pro
+    useEffect(() => {
+        if (isActivePro === false) {
+            const timer = setTimeout(() => {
+                router.push('/pricing')
+            }, 3000)
+
+            return () => clearTimeout(timer)
+        }
+    }, [isActivePro, router])
 
     const handleHumanize = async () => {
+        // Check if user is not active/pro, redirect to pricing
+        if (isActivePro === false) {
+            router.push('/pricing');
+            return;
+        }
+
+        // If subscription status is still loading, wait a bit
+        if (isActivePro === null) {
+            return;
+        }
+
         setIsLoading(true);
         setHumanized(false);
         try {
@@ -77,7 +116,7 @@ function Humanizer() {
                             </Badge>
                             <div className="flex items-center gap-2">
                                 <div className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></div>
-                                <span className="text-sm font-medium text-gray-700">{wordsRemaining} words remaining</span>
+                                <span className="text-sm font-medium text-gray-700">Ready </span>
                             </div>
                         </div>
                         <div className="flex flex-col sm:flex-row gap-4">
@@ -156,7 +195,7 @@ function Humanizer() {
                                     </div>
                                     <Button
                                         onClick={handleHumanize}
-                                        disabled={isLoading || !inputText.trim()}
+                                        disabled={isLoading || (isActivePro === true && !inputText.trim())}
                                         className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-6 px-8 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
                                         <Sparkles className="w-5 h-5 mr-3" />
@@ -165,6 +204,8 @@ function Humanizer() {
                                                 <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
                                                 Humanizing...
                                             </>
+                                        ) : isActivePro === false ? (
+                                            "Upgrade to Premium"
                                         ) : (
                                             "✨ Humanize Text"
                                         )}
@@ -277,7 +318,7 @@ function Humanizer() {
                                 </div>
                                 <Button
                                     onClick={handleHumanize}
-                                    disabled={isLoading || !inputText.trim()}
+                                    disabled={isLoading || (isActivePro === true && !inputText.trim())}
                                     className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 px-6 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
                                     <Sparkles className="w-4 h-4 mr-2" />
@@ -286,6 +327,8 @@ function Humanizer() {
                                             <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
                                             Humanizing...
                                         </>
+                                    ) : isActivePro === false ? (
+                                        "Upgrade to Premium"
                                     ) : (
                                         "✨ Humanize Text"
                                     )}

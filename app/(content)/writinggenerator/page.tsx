@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from "next/navigation";
 import { ChevronDown, Sparkles } from 'lucide-react';
 
 const ConfigureSettings = () => {
@@ -10,6 +11,33 @@ const ConfigureSettings = () => {
   const [language, setLanguage] = useState('English (US)');
   const [generatedText, setGeneratedText] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isActivePro, setIsActivePro] = useState<boolean | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkSubscription = async () => {
+      try {
+        const response = await fetch('/api/check-subscription');
+        const data = await response.json();
+        setIsActivePro(data.isActive || false);
+      } catch (error) {
+        console.error('Error checking subscription:', error);
+        setIsActivePro(false);
+      }
+    };
+    checkSubscription();
+  }, []);
+
+  // Auto-redirect to pricing after 3 seconds if user is not active/pro
+  useEffect(() => {
+    if (isActivePro === false) {
+      const timer = setTimeout(() => {
+        router.push('/pricing');
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isActivePro, router]);
 
   const essayTypes = ['General', 'Argumentative', 'Narrative', 'Descriptive', 'Expository'];
   const writingLevels = ['Beginner', 'Intermediate', 'Advanced', 'Professional'];
@@ -17,6 +45,17 @@ const ConfigureSettings = () => {
   const languages = ['English (US)', 'English (UK)', 'Spanish', 'French', 'German'];
 
   const handleGenerate = async () => {
+    // Check if user is not active/pro, redirect to pricing
+    if (isActivePro === false) {
+      router.push('/pricing');
+      return;
+    }
+
+    // If subscription status is still loading, wait a bit
+    if (isActivePro === null) {
+      return;
+    }
+
     setLoading(true);
     setGeneratedText('');
     const detailedPrompt = `
@@ -184,11 +223,20 @@ const ConfigureSettings = () => {
             <div className="pt-6">
               <button
                 type="button"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-md transition-colors duration-200 flex items-center justify-center space-x-2"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-md transition-colors duration-200 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={handleGenerate}
+                disabled={loading || (isActivePro === true && !prompt.trim())}
               >
                 <Sparkles className="h-4 w-4" />
-                <span>Generate Paragraph</span>
+                <span>
+                  {loading ? (
+                    'Generating...'
+                  ) : isActivePro === false ? (
+                    'Upgrade to Premium'
+                  ) : (
+                    'Generate Paragraph'
+                  )}
+                </span>
               </button>
             </div>
           </div>

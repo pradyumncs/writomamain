@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from 'auth'
 
 // Using TEST environment for Dodo Payments
-const DODO_BASE_URL = 'https://test.dodopayments.com'
+const DODO_BASE_URL = 'https://live.dodopayments.com'
 
 export async function POST(request: NextRequest) {
   try {

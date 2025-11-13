@@ -34,10 +34,6 @@ export default async function DashboardPage() {
       } else if (subs) {
         currentPlan = "Pro"
         customerId = subs.customer_id
-        
-        if (!customerId) {
-          subscriptionError = 'Customer ID missing from subscription data'
-        }
       }
     } catch (error) {
       console.error('Database connection error:', error)
@@ -105,7 +101,7 @@ export default async function DashboardPage() {
                     Retry
                   </Button>
                 </div>
-              ) : currentPlan === "Pro" && customerId ? (
+              ) : currentPlan === "Pro" ? (
                 <>
                   <div className="text-center">
                     <div className="flex items-center justify-center mb-2">
@@ -116,25 +112,33 @@ export default async function DashboardPage() {
                     </p>
                   </div>
                   
-                  {/* Form-based portal access (more reliable for server actions) */}
-                  <form action="/api/create-portal-session" method="POST" target="_blank" className="space-y-2">
-                    <input type="hidden" name="customerId" value={customerId} />
-                    <p className="text-xs text-gray-500 text-center">
-                      Manage billing, payment methods & subscription
-                    </p>
-                    <Button 
-                      type="submit"
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-2"
-                    >
-                      <Settings className="h-4 w-4" />
-                      Manage Subscription
-                      <ExternalLink className="h-3 w-3" />
-                    </Button>
-                  </form>
-                  
-                  <div className="text-xs text-gray-400 text-center">
-                    Customer ID: {customerId.slice(0, 8)}...
-                  </div>
+                  {customerId ? (
+                    <>
+                      {/* Form-based portal access (more reliable for server actions) */}
+                      <form action="/api/create-portal-session" method="POST" target="_blank" className="space-y-2">
+                        <input type="hidden" name="customerId" value={customerId} />
+                        <p className="text-xs text-gray-500 text-center">
+                          Manage billing, payment methods & subscription
+                        </p>
+                        <Button 
+                          type="submit"
+                          className="w-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-2"
+                        >
+                          <Settings className="h-4 w-4" />
+                          Cancel Subscription
+                          <ExternalLink className="h-3 w-3" />
+                        </Button>
+                      </form>
+                      
+                      <div className="text-xs text-gray-400 text-center">
+                        Customer ID: {customerId.slice(0, 8)}...
+                      </div>
+                    </>
+                  ) : (
+                    <div className="text-xs text-gray-500 text-center">
+                      Billing portal setup pending. Contact support if you need help managing billing.
+                    </div>
+                  )}
                 </>
               ) : (
                 <>
@@ -158,62 +162,11 @@ export default async function DashboardPage() {
 
         
           {/* Analytics/Usage Card */}
-          <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
-            <CardHeader className="pb-4">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-xl text-gray-900">Usage Stats</CardTitle>
-                <div className="p-2 bg-purple-50 rounded-lg border border-purple-100">
-                  <ShieldCheck className="h-5 w-5 text-purple-600" />
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="text-center">
-                {currentPlan === "Pro" ? (
-                  <>
-                    <p className="text-2xl font-bold text-green-600">∞</p>
-                    <p className="text-sm text-gray-600">Unlimited usage</p>
-                  </>
-                ) : (
-                  <>
-                    <p className="text-2xl font-bold text-gray-400">0/5</p>
-                    <p className="text-sm text-gray-600">Free tier usage</p>
-                  </>
-                )}
-              </div>
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
-                  className={`h-2 rounded-full ${
-                    currentPlan === "Pro" ? "bg-green-500" : "bg-gray-400"
-                  }`} 
-                  style={{ width: currentPlan === "Pro" ? "100%" : "0%" }}
-                ></div>
-              </div>
-            </CardContent>
-          </Card>
+     
         </div>
 
         {/* Testing Info (Remove in production) */}
-        {process.env.NODE_ENV === 'development' && (
-          <Card className="border-yellow-200 bg-yellow-50">
-            <CardHeader>
-              <CardTitle className="text-yellow-800 flex items-center gap-2">
-                <AlertCircle className="h-5 w-5" />
-                Development Mode - Test Environment
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-yellow-700 text-sm">
-                Using Dodo Payments TEST environment. Customer portal links will redirect to test.dodopayments.com
-              </p>
-              {customerId && (
-                <p className="text-yellow-600 text-xs mt-2">
-                  Test Customer ID: {customerId}
-                </p>
-              )}
-            </CardContent>
-          </Card>
-        )}
+
       </div>
     </div>
   )

@@ -16,7 +16,9 @@ export async function POST(req: Request) {
     // Insert into Supabase
     const { error } = await supabase.from("subscriptions").insert({
       email: customer.email,
+      customer_id: customer.customer_id,
       name: customer.name,
+      subscription_id: subscriptionId,
       status,
       next_billing_date: body.data.next_billing_date,
       previous_billing_date: body.data.previous_billing_date,
